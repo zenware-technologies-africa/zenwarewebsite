@@ -1,0 +1,1311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Zenware Technologies</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Figtree:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet"/>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0;}
+:root{
+  --bg:#060810;
+  --surface:#0D1120;
+  --surface2:#111828;
+  --border:#ffffff0f;
+  --border-md:#ffffff18;
+  --text:#EAE8F0;
+  --muted:#6B6880;
+  --subtle:#9490A8;
+  --gold:#C9A86C;
+  --gold-dim:#C9A86C40;
+  --zoraya:#FF6B35;
+  --film:#9B7BF4;
+  --tech:#2DD4BF;
+  --blog:#F472B6;
+  --impact:#86EFAC;
+  --z1:var(--zoraya);
+  --z2:var(--film);
+  --z3:var(--tech);
+  --z4:var(--blog);
+  --z5:var(--impact);
+}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Figtree',sans-serif;
+  font-size:16px;
+  line-height:1.7;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* CURSOR */
+.cursor{
+  position:fixed;
+  width:8px;height:8px;
+  background:var(--gold);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9999;
+  transform:translate(-50%,-50%);
+  transition:transform 0.1s,width 0.2s,height 0.2s,background 0.2s;
+  mix-blend-mode:screen;
+}
+.cursor-ring{
+  position:fixed;
+  width:32px;height:32px;
+  border:0.5px solid var(--gold-dim);
+  border-radius:50%;
+  pointer-events:none;
+  z-index:9998;
+  transform:translate(-50%,-50%);
+  transition:transform 0.18s ease,width 0.25s,height 0.25s,border-color 0.25s;
+}
+body:hover .cursor{opacity:1;}
+
+/* NAV */
+nav{
+  position:fixed;top:0;left:0;right:0;
+  z-index:100;
+  padding:20px 48px;
+  display:flex;justify-content:space-between;align-items:center;
+  border-bottom:0.5px solid transparent;
+  transition:border-color 0.4s,background 0.4s,backdrop-filter 0.4s;
+}
+nav.scrolled{
+  background:rgba(6,8,16,0.85);
+  backdrop-filter:blur(20px);
+  border-color:var(--border);
+}
+.nav-logo{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:16px;
+  letter-spacing:0.08em;
+  color:var(--gold);
+  text-decoration:none;
+}
+.nav-links{
+  display:flex;gap:32px;list-style:none;
+  align-items:center;
+}
+.nav-links a{
+  font-size:12px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  color:var(--muted);
+  text-decoration:none;
+  transition:color 0.2s;
+}
+.nav-links a:hover{color:var(--text);}
+.nav-cta{
+  font-size:12px;letter-spacing:0.08em;text-transform:uppercase;
+  padding:8px 20px;
+  border:0.5px solid var(--gold-dim);
+  color:var(--gold);
+  text-decoration:none;
+  border-radius:2px;
+  transition:background 0.2s,border-color 0.2s;
+}
+.nav-cta:hover{background:var(--gold-dim);border-color:var(--gold);}
+
+/* HERO */
+#hero{
+  position:relative;
+  height:100vh;min-height:680px;
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  align-items:center;
+  overflow:hidden;
+}
+#starCanvas{
+  position:absolute;inset:0;
+  width:100%;height:100%;
+  pointer-events:none;
+  z-index:0;
+}
+#constellationCanvas{
+  position:absolute;
+  right:0;top:0;
+  width:55%;height:100%;
+  z-index:2;
+  cursor:none;
+}
+.hero-content{
+  position:relative;z-index:3;
+  padding:0 0 0 clamp(24px,5vw,80px);
+  max-width:560px;
+}
+.hero-eyebrow{
+  font-family:'Syne',sans-serif;
+  font-size:11px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:20px;
+  opacity:0;
+  animation:fadeUp 0.8s 0.3s forwards;
+}
+.hero-h1{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:clamp(36px,5.5vw,72px);
+  line-height:1.0;
+  letter-spacing:-0.025em;
+  margin-bottom:24px;
+  opacity:0;
+  animation:fadeUp 0.9s 0.5s forwards;
+}
+.hero-h1 em{
+  font-style:normal;
+  color:var(--gold);
+}
+.hero-sub{
+  font-size:clamp(13px,1.5vw,16px);
+  color:var(--subtle);
+  max-width:420px;
+  margin:0 0 40px;
+  line-height:1.8;
+  font-weight:300;
+  opacity:0;
+  animation:fadeUp 0.9s 0.7s forwards;
+}
+.hero-ctas{
+  display:flex;gap:14px;flex-wrap:wrap;
+  opacity:0;
+  animation:fadeUp 0.9s 0.9s forwards;
+}
+.hero-constellation-area{
+  position:relative;z-index:2;
+  height:100%;
+  pointer-events:none;
+}
+.constellation-hint{
+  position:absolute;
+  bottom:80px;right:clamp(16px,3vw,48px);
+  z-index:4;
+  font-size:10px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  display:flex;align-items:center;gap:8px;
+  opacity:0;
+  animation:fadeIn 1s 1.6s forwards;
+}
+.constellation-hint::before{
+  content:'';
+  width:20px;height:0.5px;
+  background:var(--muted);
+  display:block;
+}
+.btn-primary{
+  padding:13px 30px;
+  background:var(--gold);
+  color:#060810;
+  font-family:'Syne',sans-serif;
+  font-weight:700;
+  font-size:12px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  border:none;
+  border-radius:2px;
+  cursor:none;
+  text-decoration:none;
+  transition:opacity 0.2s,transform 0.2s;
+  display:inline-block;
+}
+.btn-primary:hover{opacity:0.85;transform:translateY(-1px);}
+.btn-outline{
+  padding:13px 30px;
+  background:transparent;
+  color:var(--text);
+  font-family:'Syne',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  border:0.5px solid var(--border-md);
+  border-radius:2px;
+  cursor:none;
+  text-decoration:none;
+  transition:border-color 0.2s,color 0.2s,transform 0.2s;
+  display:inline-block;
+}
+.btn-outline:hover{border-color:var(--subtle);color:var(--text);transform:translateY(-1px);}
+.scroll-hint{
+  position:absolute;bottom:36px;left:clamp(24px,5vw,80px);
+  z-index:4;
+  display:flex;flex-direction:column;align-items:flex-start;gap:8px;
+  opacity:0;
+  animation:fadeIn 1s 1.4s forwards;
+}
+.scroll-hint span{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);}
+.scroll-line{width:0.5px;height:40px;background:linear-gradient(to bottom,var(--muted),transparent);}
+
+/* NODE TOOLTIP */
+.node-tooltip{
+  position:fixed;
+  z-index:200;
+  background:rgba(13,17,32,0.96);
+  border:0.5px solid var(--border-md);
+  border-radius:12px;
+  padding:20px 24px;
+  max-width:240px;
+  pointer-events:none;
+  opacity:0;
+  transform:translateY(8px);
+  transition:opacity 0.2s,transform 0.2s;
+  backdrop-filter:blur(20px);
+}
+.node-tooltip.visible{opacity:1;transform:translateY(0);}
+.tooltip-dot{width:8px;height:8px;border-radius:50%;margin-bottom:10px;}
+.tooltip-name{font-family:'Syne',sans-serif;font-weight:700;font-size:14px;margin-bottom:6px;}
+.tooltip-desc{font-size:12px;color:var(--subtle);line-height:1.6;}
+.tooltip-tag{font-size:10px;letter-spacing:0.1em;text-transform:uppercase;margin-top:10px;padding:3px 8px;border-radius:20px;display:inline-block;}
+
+/* SECTIONS */
+section{padding:120px 0;}
+.container{max-width:1080px;margin:0 auto;padding:0 48px;}
+
+/* REVEAL */
+.reveal{
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity 0.7s ease,transform 0.7s ease;
+}
+.reveal.visible{opacity:1;transform:translateY(0);}
+
+/* SECTION LABEL */
+.section-label{
+  font-size:10px;
+  letter-spacing:0.2em;
+  text-transform:uppercase;
+  color:var(--gold);
+  margin-bottom:16px;
+  font-family:'Syne',sans-serif;
+}
+
+/* ABOUT */
+#about{border-top:0.5px solid var(--border);}
+.about-grid{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  gap:80px;
+  align-items:center;
+}
+.about-h2{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:clamp(28px,3.5vw,44px);
+  line-height:1.1;
+  letter-spacing:-0.02em;
+  margin-bottom:20px;
+}
+.about-h2 em{font-style:normal;color:var(--gold);}
+.about-body{color:var(--subtle);font-size:15px;line-height:1.8;font-weight:300;}
+.core-message{
+  margin-top:32px;
+  padding:20px 24px;
+  border-left:1.5px solid var(--gold);
+  background:var(--gold-dim);
+  border-radius:0 8px 8px 0;
+}
+.core-message p{
+  font-family:'Syne',sans-serif;
+  font-size:15px;
+  font-weight:600;
+  color:var(--gold);
+  line-height:1.5;
+}
+.about-stats{
+  display:flex;flex-direction:column;gap:28px;
+}
+.stat{border-top:0.5px solid var(--border);padding-top:20px;}
+.stat-num{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:40px;
+  color:var(--text);
+  line-height:1;
+  margin-bottom:4px;
+}
+.stat-label{font-size:13px;color:var(--muted);}
+
+/* ECOSYSTEM */
+#ecosystem{background:var(--surface);}
+.eco-header{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-bottom:56px;
+}
+.eco-h2{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:clamp(28px,3.5vw,44px);
+  line-height:1.1;
+  letter-spacing:-0.02em;
+}
+.eco-sub{font-size:13px;color:var(--muted);max-width:200px;text-align:right;line-height:1.6;}
+.pillars{
+  display:grid;
+  grid-template-columns:repeat(5,1fr);
+  gap:1px;
+  background:var(--border);
+  border:0.5px solid var(--border);
+  border-radius:12px;
+  overflow:hidden;
+}
+.pillar{
+  background:var(--bg);
+  padding:32px 24px 28px;
+  cursor:none;
+  transition:background 0.3s;
+  position:relative;
+  overflow:hidden;
+}
+.pillar::before{
+  content:'';
+  position:absolute;top:0;left:0;right:0;
+  height:2px;
+  transition:opacity 0.3s;
+  opacity:0;
+}
+.pillar:hover{background:var(--surface2);}
+.pillar:hover::before{opacity:1;}
+.p1::before{background:var(--zoraya);}
+.p2::before{background:var(--film);}
+.p3::before{background:var(--tech);}
+.p4::before{background:var(--blog);}
+.p5::before{background:var(--impact);}
+
+.pillar-icon{
+  width:36px;height:36px;border-radius:8px;
+  display:flex;align-items:center;justify-content:center;
+  margin-bottom:20px;
+  position:relative;
+}
+.pillar-icon svg{width:18px;height:18px;}
+.pillar-num{
+  font-family:'Syne',sans-serif;
+  font-size:10px;
+  font-weight:700;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:10px;
+}
+.pillar-name{
+  font-family:'Syne',sans-serif;
+  font-weight:700;
+  font-size:15px;
+  margin-bottom:10px;
+  line-height:1.3;
+}
+.pillar-desc{font-size:12px;color:var(--muted);line-height:1.6;}
+.pillar-tag{
+  display:inline-block;
+  margin-top:16px;
+  font-size:10px;
+  letter-spacing:0.1em;
+  text-transform:uppercase;
+  padding:3px 10px;
+  border-radius:20px;
+  font-weight:600;
+}
+
+/* VISION QUOTE */
+#vision{
+  background:var(--bg);
+  text-align:center;
+  padding:100px 0;
+  border-top:0.5px solid var(--border);
+  border-bottom:0.5px solid var(--border);
+  position:relative;
+  overflow:hidden;
+}
+.vision-bg-text{
+  position:absolute;
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:200px;
+  letter-spacing:-0.05em;
+  color:#ffffff03;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  white-space:nowrap;
+  pointer-events:none;
+  user-select:none;
+}
+.vision-quote{
+  font-family:'Syne',sans-serif;
+  font-weight:700;
+  font-size:clamp(20px,3vw,34px);
+  line-height:1.4;
+  letter-spacing:-0.01em;
+  max-width:680px;
+  margin:0 auto 16px;
+  position:relative;
+}
+.vision-quote em{font-style:normal;color:var(--gold);}
+.vision-attr{font-size:12px;letter-spacing:0.14em;text-transform:uppercase;color:var(--muted);}
+
+/* BUILDERS */
+#builders{border-top:0.5px solid var(--border);}
+.builders-header{margin-bottom:48px;}
+.builders-h2{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:clamp(24px,3vw,38px);
+  letter-spacing:-0.02em;
+  margin-bottom:8px;
+}
+.builders-sub{font-size:14px;color:var(--muted);}
+.builder-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:16px;
+}
+.builder-card{
+  background:var(--surface);
+  border:0.5px solid var(--border);
+  border-radius:12px;
+  padding:28px;
+  cursor:none;
+  transition:border-color 0.2s,background 0.2s,transform 0.2s;
+  position:relative;
+  overflow:hidden;
+}
+.builder-card:hover{
+  border-color:var(--border-md);
+  background:var(--surface2);
+  transform:translateY(-2px);
+}
+.builder-avatar{
+  width:48px;height:48px;
+  border-radius:50%;
+  margin-bottom:16px;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:16px;
+}
+.builder-name{
+  font-family:'Syne',sans-serif;
+  font-weight:700;
+  font-size:15px;
+  margin-bottom:4px;
+}
+.builder-role{font-size:12px;color:var(--muted);margin-bottom:12px;}
+.builder-desc{font-size:12px;color:var(--subtle);line-height:1.6;}
+.builder-tag{
+  position:absolute;top:20px;right:20px;
+  font-size:9px;letter-spacing:0.1em;text-transform:uppercase;
+  padding:3px 8px;border-radius:20px;
+  background:var(--gold-dim);color:var(--gold);
+}
+
+/* WHY */
+#why{background:var(--surface);border-top:0.5px solid var(--border);}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:center;}
+.why-h2{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:clamp(24px,3vw,38px);
+  letter-spacing:-0.02em;
+  line-height:1.1;
+  margin-bottom:8px;
+}
+.why-h2 em{font-style:normal;color:var(--gold);}
+.why-sub{font-size:14px;color:var(--muted);margin-bottom:40px;}
+.why-items{display:flex;flex-direction:column;gap:0;}
+.why-item{
+  display:flex;gap:20px;align-items:flex-start;
+  padding:20px 0;
+  border-bottom:0.5px solid var(--border);
+}
+.why-item:first-child{border-top:0.5px solid var(--border);}
+.why-num{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:11px;
+  color:var(--muted);
+  letter-spacing:0.1em;
+  padding-top:4px;
+  min-width:28px;
+}
+.why-content h4{
+  font-family:'Syne',sans-serif;
+  font-weight:700;
+  font-size:14px;
+  margin-bottom:4px;
+}
+.why-content p{font-size:13px;color:var(--muted);line-height:1.6;}
+
+/* CTA */
+#cta{
+  text-align:center;
+  padding:120px 0;
+  border-top:0.5px solid var(--border);
+  position:relative;
+  overflow:hidden;
+}
+.cta-glow{
+  position:absolute;
+  width:600px;height:300px;
+  border-radius:50%;
+  background:radial-gradient(ellipse,rgba(201,168,108,0.06) 0%,transparent 70%);
+  top:50%;left:50%;
+  transform:translate(-50%,-50%);
+  pointer-events:none;
+}
+.cta-h2{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:clamp(28px,4vw,52px);
+  letter-spacing:-0.025em;
+  line-height:1.0;
+  margin-bottom:20px;
+  position:relative;
+}
+.cta-h2 em{font-style:normal;color:var(--gold);}
+.cta-sub{font-size:15px;color:var(--muted);margin-bottom:40px;position:relative;}
+.cta-buttons{display:flex;gap:12px;justify-content:center;flex-wrap:wrap;position:relative;}
+.btn-secondary{
+  padding:13px 26px;
+  background:transparent;
+  color:var(--subtle);
+  font-family:'Syne',sans-serif;
+  font-weight:600;
+  font-size:12px;
+  letter-spacing:0.08em;
+  text-transform:uppercase;
+  border:0.5px solid var(--border);
+  border-radius:2px;
+  cursor:none;
+  text-decoration:none;
+  transition:border-color 0.2s,color 0.2s;
+  display:inline-block;
+}
+.btn-secondary:hover{border-color:var(--border-md);color:var(--text);}
+
+/* FOOTER */
+footer{
+  border-top:0.5px solid var(--border);
+  padding:40px 0 32px;
+}
+.footer-inner{
+  display:flex;justify-content:space-between;align-items:flex-start;
+  gap:40px;
+  flex-wrap:wrap;
+}
+.footer-brand-block .footer-logo{
+  font-family:'Syne',sans-serif;
+  font-weight:800;
+  font-size:15px;
+  letter-spacing:0.08em;
+  color:var(--gold);
+  margin-bottom:8px;
+}
+.footer-brand-block p{font-size:12px;color:var(--muted);max-width:200px;line-height:1.6;}
+.footer-links-group h5{
+  font-size:10px;
+  letter-spacing:0.15em;
+  text-transform:uppercase;
+  color:var(--muted);
+  margin-bottom:14px;
+  font-weight:600;
+}
+.footer-links-group ul{list-style:none;display:flex;flex-direction:column;gap:8px;}
+.footer-links-group a{
+  font-size:13px;color:var(--muted);text-decoration:none;
+  transition:color 0.2s;
+}
+.footer-links-group a:hover{color:var(--text);}
+.footer-bottom{
+  margin-top:40px;
+  padding-top:20px;
+  border-top:0.5px solid var(--border);
+  display:flex;justify-content:space-between;align-items:center;
+  flex-wrap:wrap;gap:12px;
+}
+.footer-bottom span{font-size:12px;color:var(--muted);}
+
+/* ANIMATIONS */
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(20px);}
+  to{opacity:1;transform:translateY(0);}
+}
+@keyframes fadeIn{
+  from{opacity:0;}
+  to{opacity:1;}
+}
+
+@media(max-width:900px){
+  nav{padding:16px 24px;}
+  .nav-links{display:none;}
+  .container{padding:0 24px;}
+  #hero{grid-template-columns:1fr;grid-template-rows:auto 1fr;}
+  .hero-content{padding:100px 24px 0;max-width:none;text-align:center;}
+  .hero-ctas{justify-content:center;}
+  .hero-sub{margin:0 auto 40px;}
+  #constellationCanvas{width:100%;height:60vh;top:auto;bottom:0;position:absolute;}
+  .about-grid,.why-grid{grid-template-columns:1fr;}
+  .pillars{grid-template-columns:1fr 1fr;}
+  .builder-grid{grid-template-columns:1fr 1fr;}
+  .eco-header{flex-direction:column;align-items:flex-start;gap:8px;}
+  .eco-sub{text-align:left;max-width:none;}
+  section{padding:80px 0;}
+}
+@media(max-width:600px){
+  .pillars{grid-template-columns:1fr;}
+  .builder-grid{grid-template-columns:1fr;}
+  .hero-h1{font-size:36px;}
+}
+</style>
+</head>
+<body>
+
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<div class="node-tooltip" id="tooltip">
+  <div class="tooltip-dot" id="tooltipDot"></div>
+  <div class="tooltip-name" id="tooltipName"></div>
+  <div class="tooltip-desc" id="tooltipDesc"></div>
+  <div class="tooltip-tag" id="tooltipTag"></div>
+</div>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">ZENWARE</a>
+  <ul class="nav-links">
+    <li><a href="#ecosystem">Ecosystem</a></li>
+    <li><a href="#builders">Builders</a></li>
+    <li><a href="#about">About</a></li>
+    <li><a href="#cta" class="nav-cta">Join Us</a></li>
+  </ul>
+</nav>
+
+<section id="hero">
+  <canvas id="starCanvas"></canvas>
+  <div class="hero-content">
+    <p class="hero-eyebrow">Zenware Technologies</p>
+    <h1 class="hero-h1">Building Ideas<br>That <em>Shape Culture</em></h1>
+    <p class="hero-sub">A digital ecosystem at the intersection of technology, creativity, events, and impact. One story, five corners.</p>
+    <div class="hero-ctas">
+      <a href="#ecosystem" class="btn-primary">Explore the Ecosystem</a>
+      <a href="#cta" class="btn-outline">Join the Movement</a>
+    </div>
+  </div>
+  <div class="hero-constellation-area"></div>
+  <canvas id="constellationCanvas"></canvas>
+  <div class="constellation-hint">Hover the nodes</div>
+  <div class="scroll-hint">
+    <span>Scroll</span>
+    <div class="scroll-line"></div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="container">
+    <div class="about-grid">
+      <div class="reveal">
+        <p class="section-label">Who we are</p>
+        <h2 class="about-h2">More than a company.<br>A <em>platform</em> for ideas.</h2>
+        <p class="about-body">Zenware Technologies is an umbrella ecosystem built for builders, creators, and communities. We develop software, produce films, host experiences, document ideas, and invest in people — not as separate ventures, but as one unified story.</p>
+        <div class="core-message">
+          <p>We build, document, and amplify ideas that matter.</p>
+        </div>
+      </div>
+      <div class="about-stats reveal">
+        <div class="stat">
+          <div class="stat-num">5</div>
+          <div class="stat-label">Pillars under one roof</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">1</div>
+          <div class="stat-label">Unified story, unified brand</div>
+        </div>
+        <div class="stat">
+          <div class="stat-num">∞</div>
+          <div class="stat-label">Ideas worth building</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ECOSYSTEM -->
+<section id="ecosystem">
+  <div class="container">
+    <div class="eco-header reveal">
+      <div>
+        <p class="section-label">Our Universe</p>
+        <h2 class="eco-h2">The Five Corners</h2>
+      </div>
+      <p class="eco-sub">Each branch has a distinct voice. All belong to the same story.</p>
+    </div>
+    <div class="pillars reveal">
+      <div class="pillar p1">
+        <div class="pillar-icon" style="background:#FF6B3515;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="1.5" stroke-linecap="round"><circle cx="12" cy="12" r="3"/><path d="M12 2v2M12 20v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M2 12h2M20 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+        </div>
+        <div class="pillar-num">01</div>
+        <div class="pillar-name" style="color:var(--zoraya);">Tech & Products</div>
+        <div class="pillar-desc">Apps, tools, and digital systems built to be practical, scalable, and actually useful.</div>
+        <div class="pillar-tag" style="background:#FF6B3515;color:#FF6B35;">Build</div>
+      </div>
+      <div class="pillar p2">
+        <div class="pillar-icon" style="background:#9B7BF415;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#9B7BF4" stroke-width="1.5" stroke-linecap="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+        </div>
+        <div class="pillar-num">02</div>
+        <div class="pillar-name" style="color:var(--film);">Media & Ideas</div>
+        <div class="pillar-desc">Insights, trends, and builder spotlights — we see them before the spotlight does.</div>
+        <div class="pillar-tag" style="background:#9B7BF415;color:#9B7BF4;">Read</div>
+      </div>
+      <div class="pillar p3">
+        <div class="pillar-icon" style="background:#2DD4BF15;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#2DD4BF" stroke-width="1.5" stroke-linecap="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+        </div>
+        <div class="pillar-num">03</div>
+        <div class="pillar-name" style="color:var(--tech);">Film & Studio</div>
+        <div class="pillar-desc">Visual storytelling through film, video editing, and creative direction.</div>
+        <div class="pillar-tag" style="background:#2DD4BF15;color:#2DD4BF;">Watch</div>
+      </div>
+      <div class="pillar p4">
+        <div class="pillar-icon" style="background:#F472B615;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#F472B6" stroke-width="1.5" stroke-linecap="round"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </div>
+        <div class="pillar-num">04</div>
+        <div class="pillar-name" style="color:var(--blog);">Zoraya Events</div>
+        <div class="pillar-desc">Curated experiences and cultural gatherings that move communities forward.</div>
+        <div class="pillar-tag" style="background:#F472B615;color:#F472B6;">Experience</div>
+      </div>
+      <div class="pillar p5">
+        <div class="pillar-icon" style="background:#86EFAC15;">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#86EFAC" stroke-width="1.5" stroke-linecap="round"><path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 000-7.78z"/></svg>
+        </div>
+        <div class="pillar-num">05</div>
+        <div class="pillar-name" style="color:var(--impact);">Impact</div>
+        <div class="pillar-desc">Supporting people and communities through philanthropy and social initiatives.</div>
+        <div class="pillar-tag" style="background:#86EFAC15;color:#86EFAC;">Give</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- VISION -->
+<section id="vision">
+  <div class="vision-bg-text">ZENWARE</div>
+  <div class="container">
+    <p class="section-label reveal" style="text-align:center;">The vision</p>
+    <p class="vision-quote reveal">
+      We are creating a space where ideas don't just exist — they are <em>built, shared, experienced,</em> and amplified.
+    </p>
+    <p class="vision-attr reveal">Zenware Technologies · Est. 2024</p>
+  </div>
+</section>
+
+<!-- BUILDERS -->
+<section id="builders">
+  <div class="container">
+    <div class="builders-header reveal">
+      <p class="section-label">Spotlight</p>
+      <h2 class="builders-h2">Before the spotlight hits,<br>we see the builders.</h2>
+      <p class="builders-sub">Emerging creators, developers, and innovators we're watching closely.</p>
+    </div>
+    <div class="builder-grid">
+      <div class="builder-card reveal">
+        <div class="builder-avatar" style="background:#FF6B3520;color:#FF6B35;">AK</div>
+        <div class="builder-tag">Upcoming</div>
+        <div class="builder-name">Amara Kofi</div>
+        <div class="builder-role">Founder · TechLagos</div>
+        <div class="builder-desc">Building Africa's next developer platform from Lagos. Watch this space.</div>
+      </div>
+      <div class="builder-card reveal" style="transition-delay:0.1s;">
+        <div class="builder-avatar" style="background:#9B7BF420;color:#9B7BF4;">NM</div>
+        <div class="builder-tag">Upcoming</div>
+        <div class="builder-name">Nadia Mwangi</div>
+        <div class="builder-role">Filmmaker · Nairobi</div>
+        <div class="builder-desc">Documentary filmmaker reframing African narratives through cinematic storytelling.</div>
+      </div>
+      <div class="builder-card reveal" style="transition-delay:0.2s;">
+        <div class="builder-avatar" style="background:#2DD4BF20;color:#2DD4BF;">JO</div>
+        <div class="builder-tag">Upcoming</div>
+        <div class="builder-name">Jordan Osei</div>
+        <div class="builder-role">Engineer · Product</div>
+        <div class="builder-desc">Quietly shipping products that millions will use before anyone knows his name.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WHY -->
+<section id="why">
+  <div class="container">
+    <div class="why-grid">
+      <div class="reveal">
+        <p class="section-label">Why Zenware</p>
+        <h2 class="why-h2">Built different.<br><em>On purpose.</em></h2>
+        <p class="why-sub">Not a startup, not an agency. Something new.</p>
+      </div>
+      <div class="why-items reveal">
+        <div class="why-item">
+          <div class="why-num">01</div>
+          <div class="why-content">
+            <h4>Multi-disciplinary by design</h4>
+            <p>Technology, film, events, media, and impact — not silos, but a single interconnected system.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">02</div>
+          <div class="why-content">
+            <h4>Execution over ideas</h4>
+            <p>We ship. We host. We document. We don't just talk about building — we build.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">03</div>
+          <div class="why-content">
+            <h4>Community-first</h4>
+            <p>Every pillar exists to serve, amplify, and grow the people around it.</p>
+          </div>
+        </div>
+        <div class="why-item">
+          <div class="why-num">04</div>
+          <div class="why-content">
+            <h4>Built for the future</h4>
+            <p>Designed to grow. Architected to last. Zenware is a long game.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta">
+  <div class="cta-glow"></div>
+  <div class="container">
+    <p class="section-label reveal" style="text-align:center;">Join the collective</p>
+    <h2 class="cta-h2 reveal">Be Part of What<br><em>We're Building</em></h2>
+    <p class="cta-sub reveal">The ecosystem is live. The story is just starting.</p>
+    <div class="cta-buttons reveal">
+      <a href="#" class="btn-primary">Collaborate</a>
+      <a href="#ecosystem" class="btn-secondary">Attend an Event</a>
+      <a href="#ecosystem" class="btn-secondary">Explore Projects</a>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand-block">
+        <div class="footer-logo">ZENWARE</div>
+        <p>A digital ecosystem at the intersection of technology, creativity, culture, and impact.</p>
+      </div>
+      <div class="footer-links-group">
+        <h5>Pillars</h5>
+        <ul>
+          <li><a href="#">Tech & Products</a></li>
+          <li><a href="#">Media & Ideas</a></li>
+          <li><a href="#">Film & Studio</a></li>
+          <li><a href="#">Zoraya Events</a></li>
+          <li><a href="#">Impact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-group">
+        <h5>Company</h5>
+        <ul>
+          <li><a href="#">About</a></li>
+          <li><a href="#">Builders Spotlight</a></li>
+          <li><a href="#">Collaborate</a></li>
+          <li><a href="#">Contact</a></li>
+        </ul>
+      </div>
+      <div class="footer-links-group">
+        <h5>Social</h5>
+        <ul>
+          <li><a href="#">Twitter / X</a></li>
+          <li><a href="#">Instagram</a></li>
+          <li><a href="#">LinkedIn</a></li>
+          <li><a href="#">YouTube</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2025 Zenware Technologies. All rights reserved.</span>
+      <span>Built with intention.</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+// CURSOR
+const cursor=document.getElementById('cursor');
+const ring=document.getElementById('cursorRing');
+let mx=0,my=0,rx=0,ry=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX;my=e.clientY;
+  cursor.style.left=mx+'px';cursor.style.top=my+'px';
+});
+function animRing(){
+  rx+=(mx-rx)*0.12;ry+=(my-ry)*0.12;
+  ring.style.left=rx+'px';ring.style.top=ry+'px';
+  requestAnimationFrame(animRing);
+}animRing();
+document.querySelectorAll('a,button,.pillar,.builder-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>{
+    cursor.style.width='16px';cursor.style.height='16px';
+    ring.style.width='48px';ring.style.height='48px';
+    ring.style.borderColor='rgba(201,168,108,0.4)';
+  });
+  el.addEventListener('mouseleave',()=>{
+    cursor.style.width='8px';cursor.style.height='8px';
+    ring.style.width='32px';ring.style.height='32px';
+    ring.style.borderColor='rgba(201,168,108,0.15)';
+  });
+});
+
+// NAV SCROLL
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{
+  nav.classList.toggle('scrolled',window.scrollY>60);
+});
+
+// SCROLL REVEAL
+const reveals=document.querySelectorAll('.reveal');
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('visible');}});
+},{threshold:0.12});
+reveals.forEach(r=>obs.observe(r));
+
+// STARFIELD
+const sc=document.getElementById('starCanvas');
+const sctx=sc.getContext('2d');
+let stars=[];
+function resizeStar(){
+  sc.width=window.innerWidth;sc.height=window.innerHeight;
+  stars=[];
+  for(let i=0;i<320;i++){
+    stars.push({
+      x:Math.random()*sc.width,y:Math.random()*sc.height,
+      r:Math.random()*1.3+0.2,
+      alpha:Math.random()*0.6+0.15,
+      twinkleSpeed:Math.random()*0.018+0.004,
+      twinkleDir:Math.random()>0.5?1:-1,
+    });
+  }
+}
+resizeStar();
+function drawStars(){
+  sctx.clearRect(0,0,sc.width,sc.height);
+  stars.forEach(s=>{
+    s.alpha+=s.twinkleSpeed*s.twinkleDir;
+    if(s.alpha>0.85||s.alpha<0.06)s.twinkleDir*=-1;
+    sctx.beginPath();
+    sctx.arc(s.x,s.y,s.r,0,Math.PI*2);
+    sctx.fillStyle=`rgba(230,228,255,${s.alpha})`;
+    sctx.fill();
+  });
+}
+
+// CONSTELLATION
+const cc=document.getElementById('constellationCanvas');
+const ctx=cc.getContext('2d');
+const tooltip=document.getElementById('tooltip');
+
+const NODES=[
+  {id:'core',label:'ZENWARE',sub:'Technologies',color:'#C9A86C',r:26,
+   desc:'The mothership. Every branch, every idea, every story — all rooted here.',tag:'Ecosystem',tagColor:'#C9A86C'},
+  {id:'tech',label:'TECH',sub:'Products',color:'#FF6B35',r:17,
+   desc:'Apps, tools, and digital systems built for real people. Practical, scalable, shipped.',tag:'Build',tagColor:'#FF6B35'},
+  {id:'media',label:'MEDIA',sub:'Ideas',color:'#9B7BF4',r:17,
+   desc:'Insights, spotlights, and stories about builders before the world catches on.',tag:'Read',tagColor:'#9B7BF4'},
+  {id:'film',label:'FILM',sub:'Studio',color:'#2DD4BF',r:17,
+   desc:'Visual storytelling through film, video editing, and creative direction.',tag:'Watch',tagColor:'#2DD4BF'},
+  {id:'zoraya',label:'ZORAYA',sub:'Events',color:'#F472B6',r:17,
+   desc:'Curated experiences, gatherings, and cultural moments that move communities.',tag:'Experience',tagColor:'#F472B6'},
+  {id:'impact',label:'IMPACT',sub:'Give Back',color:'#86EFAC',r:17,
+   desc:'Giving back. Supporting people and communities through intentional action.',tag:'Give',tagColor:'#86EFAC'},
+];
+const EDGES=[
+  ['core','tech'],['core','media'],['core','film'],['core','zoraya'],['core','impact'],
+  ['tech','media'],['film','media'],['zoraya','impact'],
+];
+
+let time=0,hovered=null,clicked=null,clickPulse=0;
+
+function hexToRgb(hex){
+  return{
+    r:parseInt(hex.slice(1,3),16),
+    g:parseInt(hex.slice(3,5),16),
+    b:parseInt(hex.slice(5,7),16)
+  };
+}
+
+function layoutNodes(){
+  const W=cc.width,H=cc.height;
+  const cx=W/2,cy=H/2;
+  const core=NODES[0];
+  core.x=cx;core.y=cy;
+  const outerR=Math.min(W,H)*0.33;
+  const count=NODES.length-1;
+  for(let i=1;i<NODES.length;i++){
+    const angle=(i-1)/count*Math.PI*2 - Math.PI/2;
+    NODES[i].baseX=cx+Math.cos(angle)*outerR;
+    NODES[i].baseY=cy+Math.sin(angle)*outerR;
+    NODES[i].x=NODES[i].baseX;
+    NODES[i].y=NODES[i].baseY;
+    NODES[i].floatOffset=((i-1)/count)*Math.PI*2;
+  }
+}
+
+function resizeCC(){
+  const hero=document.getElementById('hero');
+  const isMobile=window.innerWidth<=900;
+  if(isMobile){
+    cc.width=window.innerWidth;
+    cc.height=Math.round(window.innerHeight*0.55);
+  } else {
+    cc.width=Math.round(window.innerWidth*0.55);
+    cc.height=window.innerHeight;
+  }
+  layoutNodes();
+}
+
+// Hit test — uses canvas-local coords (mouse relative to canvas rect)
+function getHovered(cx,cy){
+  for(let i=0;i<NODES.length;i++){
+    const n=NODES[i];
+    const dx=cx-n.x,dy=cy-n.y;
+    if(Math.sqrt(dx*dx+dy*dy)<n.r+16)return n;
+  }
+  return null;
+}
+
+cc.addEventListener('mousemove',e=>{
+  const rect=cc.getBoundingClientRect();
+  const lx=e.clientX-rect.left,ly=e.clientY-rect.top;
+  const found=getHovered(lx,ly);
+  hovered=found;
+  if(found){
+    tooltip.classList.add('visible');
+    document.getElementById('tooltipDot').style.background=found.color;
+    document.getElementById('tooltipName').textContent=found.label+(found.sub?' · '+found.sub:'');
+    document.getElementById('tooltipName').style.color=found.color;
+    document.getElementById('tooltipDesc').textContent=found.desc;
+    document.getElementById('tooltipTag').textContent=found.tag||'';
+    document.getElementById('tooltipTag').style.background=found.color+'22';
+    document.getElementById('tooltipTag').style.color=found.color;
+    let tx=e.clientX+24,ty=e.clientY-20;
+    if(tx+260>window.innerWidth)tx=e.clientX-280;
+    if(ty+160>window.innerHeight)ty=e.clientY-160;
+    tooltip.style.left=tx+'px';tooltip.style.top=ty+'px';
+    cc.style.cursor='pointer';
+    // Expand cursor ring for node hover
+    cursor.style.width='20px';cursor.style.height='20px';
+    ring.style.width='56px';ring.style.height='56px';
+    ring.style.borderColor=found.color+'60';
+  } else {
+    tooltip.classList.remove('visible');
+    cc.style.cursor='none';
+    cursor.style.width='8px';cursor.style.height='8px';
+    ring.style.width='32px';ring.style.height='32px';
+    ring.style.borderColor='rgba(201,168,108,0.15)';
+  }
+});
+
+cc.addEventListener('click',e=>{
+  const rect=cc.getBoundingClientRect();
+  const lx=e.clientX-rect.left,ly=e.clientY-rect.top;
+  const found=getHovered(lx,ly);
+  if(found){
+    clicked=found;
+    clickPulse=1.0;
+  }
+});
+
+cc.addEventListener('mouseleave',()=>{
+  tooltip.classList.remove('visible');
+  hovered=null;
+  cursor.style.width='8px';cursor.style.height='8px';
+  ring.style.width='32px';ring.style.height='32px';
+  ring.style.borderColor='rgba(201,168,108,0.15)';
+});
+
+// Touch support
+cc.addEventListener('touchstart',e=>{
+  e.preventDefault();
+  const rect=cc.getBoundingClientRect();
+  const t=e.touches[0];
+  const lx=t.clientX-rect.left,ly=t.clientY-rect.top;
+  const found=getHovered(lx,ly);
+  hovered=found;clicked=found;if(found)clickPulse=1.0;
+  if(found){
+    tooltip.classList.add('visible');
+    document.getElementById('tooltipDot').style.background=found.color;
+    document.getElementById('tooltipName').textContent=found.label+(found.sub?' · '+found.sub:'');
+    document.getElementById('tooltipName').style.color=found.color;
+    document.getElementById('tooltipDesc').textContent=found.desc;
+    document.getElementById('tooltipTag').textContent=found.tag||'';
+    document.getElementById('tooltipTag').style.background=found.color+'22';
+    document.getElementById('tooltipTag').style.color=found.color;
+    tooltip.style.left=(t.clientX-130)+'px';
+    tooltip.style.top=(t.clientY-180)+'px';
+  } else {
+    tooltip.classList.remove('visible');
+  }
+},{passive:false});
+
+function draw(){
+  ctx.clearRect(0,0,cc.width,cc.height);
+  time+=0.007;
+  if(clickPulse>0)clickPulse=Math.max(0,clickPulse-0.025);
+
+  // Float outer nodes
+  for(let i=1;i<NODES.length;i++){
+    const n=NODES[i];
+    const fo=n.floatOffset||0;
+    n.x=n.baseX+Math.sin(time*0.9+fo)*7;
+    n.y=n.baseY+Math.cos(time*0.65+fo)*5;
+  }
+
+  const core=NODES[0];
+  const outerR=Math.min(cc.width,cc.height)*0.33;
+
+  // Orbit rings
+  [outerR,outerR*0.55].forEach((r,i)=>{
+    ctx.beginPath();
+    ctx.arc(core.x,core.y,r,0,Math.PI*2);
+    ctx.strokeStyle=`rgba(201,168,108,${i===0?0.07:0.04})`;
+    ctx.lineWidth=0.5;
+    ctx.setLineDash([4,10]);
+    ctx.stroke();
+    ctx.setLineDash([]);
+  });
+
+  // Slow-moving orbit particles
+  for(let i=0;i<5;i++){
+    const a=time*0.25+i*(Math.PI*2/5);
+    const px=core.x+Math.cos(a)*outerR;
+    const py=core.y+Math.sin(a)*outerR;
+    const col=hexToRgb(NODES[i+1].color);
+    ctx.beginPath();ctx.arc(px,py,1.8,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${col.r},${col.g},${col.b},0.5)`;
+    ctx.fill();
+  }
+
+  // Edges
+  EDGES.forEach(([a,b])=>{
+    const na=NODES.find(n=>n.id===a);
+    const nb=NODES.find(n=>n.id===b);
+    if(!na||!nb)return;
+    const isH=hovered&&(hovered.id===a||hovered.id===b);
+    const isC=clicked&&(clicked.id===a||clicked.id===b);
+    const alpha=isH||isC?0.55:0.1;
+    const lw=isH||isC?1:0.4;
+    const ra=hexToRgb(na.color),rb=hexToRgb(nb.color);
+    const grad=ctx.createLinearGradient(na.x,na.y,nb.x,nb.y);
+    grad.addColorStop(0,`rgba(${ra.r},${ra.g},${ra.b},${alpha})`);
+    grad.addColorStop(1,`rgba(${rb.r},${rb.g},${rb.b},${alpha})`);
+
+    const cpx=(na.x+nb.x)/2+(nb.y-na.y)*0.18;
+    const cpy=(na.y+nb.y)/2-(nb.x-na.x)*0.18;
+
+    ctx.beginPath();
+    ctx.moveTo(na.x,na.y);
+    ctx.quadraticCurveTo(cpx,cpy,nb.x,nb.y);
+    ctx.strokeStyle=grad;
+    ctx.lineWidth=lw;
+    ctx.setLineDash(isH||isC?[]:([5,8]));
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    // Travelling particle along hovered edge
+    if(isH||isC){
+      const prog=((time*(isC?1.5:0.8))%1+1)%1;
+      const t2=prog;
+      const tx=(1-t2)*(1-t2)*na.x+2*(1-t2)*t2*cpx+t2*t2*nb.x;
+      const ty=(1-t2)*(1-t2)*na.y+2*(1-t2)*t2*cpy+t2*t2*nb.y;
+      ctx.beginPath();ctx.arc(tx,ty,2.5,0,Math.PI*2);
+      ctx.fillStyle=`rgba(${ra.r},${ra.g},${ra.b},0.95)`;ctx.fill();
+    }
+  });
+
+  // Nodes
+  NODES.forEach(n=>{
+    const isH=hovered&&hovered.id===n.id;
+    const isC=clicked&&clicked.id===n.id;
+    const pulseFactor=isH?1+Math.sin(time*5)*0.07:(isC?1+clickPulse*0.3:1);
+    const r=n.r*pulseFactor;
+    const rgb=hexToRgb(n.color);
+
+    // Click ripple
+    if(isC&&clickPulse>0){
+      const ripR=n.r+clickPulse*60;
+      ctx.beginPath();ctx.arc(n.x,n.y,ripR,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(${rgb.r},${rgb.g},${rgb.b},${clickPulse*0.4})`;
+      ctx.lineWidth=1;ctx.stroke();
+    }
+
+    // Outer aura
+    const auraR=r*(isH?5:isC?4:2.8);
+    const grd=ctx.createRadialGradient(n.x,n.y,0,n.x,n.y,auraR);
+    grd.addColorStop(0,`rgba(${rgb.r},${rgb.g},${rgb.b},${isH?0.28:isC?0.22:0.1})`);
+    grd.addColorStop(1,`rgba(${rgb.r},${rgb.g},${rgb.b},0)`);
+    ctx.beginPath();ctx.arc(n.x,n.y,auraR,0,Math.PI*2);
+    ctx.fillStyle=grd;ctx.fill();
+
+    // Outer dashed ring on hover
+    if(isH||isC){
+      ctx.beginPath();ctx.arc(n.x,n.y,r+10,0,Math.PI*2);
+      ctx.strokeStyle=`rgba(${rgb.r},${rgb.g},${rgb.b},0.3)`;
+      ctx.lineWidth=0.5;
+      ctx.setLineDash([3,5]);ctx.stroke();ctx.setLineDash([]);
+    }
+
+    // Node circle
+    ctx.beginPath();ctx.arc(n.x,n.y,r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(${rgb.r},${rgb.g},${rgb.b},${isH?1:0.88})`;
+    ctx.fill();
+
+    // Inner shine
+    ctx.beginPath();ctx.arc(n.x-r*0.22,n.y-r*0.22,r*0.38,0,Math.PI*2);
+    ctx.fillStyle=`rgba(255,255,255,${isH?0.18:0.08})`;
+    ctx.fill();
+
+    // Label inside node
+    const fs=n.id==='core'?10:8;
+    ctx.font=`800 ${fs}px 'Syne',sans-serif`;
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    ctx.fillStyle=n.id==='core'?'#060810':'rgba(6,8,16,0.9)';
+    ctx.fillText(n.label,n.x,n.y);
+
+    // Sub-label below node
+    ctx.font=`400 10px 'Figtree',sans-serif`;
+    ctx.fillStyle=isH||isC
+      ?`rgba(${rgb.r},${rgb.g},${rgb.b},1)`
+      :`rgba(${rgb.r},${rgb.g},${rgb.b},0.6)`;
+    ctx.fillText(n.sub||'',n.x,n.y+r+14);
+  });
+}
+
+function loop(){
+  drawStars();
+  draw();
+  requestAnimationFrame(loop);
+}
+
+window.addEventListener('resize',()=>{resizeCC();resizeStar();});
+resizeCC();
+resizeStar();
+loop();
+</script>
+</body>
+</html>
